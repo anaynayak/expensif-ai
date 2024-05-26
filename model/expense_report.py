@@ -1,14 +1,30 @@
+from typing import List, Optional
 from langchain_community.chat_models import ChatLiteLLM
 from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.pydantic_v1 import BaseModel, Field
+from langchain_core.output_parsers import PydanticOutputParser
+from langchain_core.prompts import PromptTemplate
 
 
-def model(model: str, file: str, text: str) -> str:
-    chat = ChatLiteLLM(model=model)
-    response = chat.invoke(
-        [
-            SystemMessage(
-                content=f"""
-            You are a member of the finance team responsible for reviewing all submitted expenses.
+class ExpenseItem(BaseModel):
+    date: str = Field(description="Date of the expense in yyyy-mm-dd format")
+    name: str = Field(description="Name of the item")
+    quantity: int = Field(description="Quantity of the item")
+    amount: Optional[float] = Field(description="Amount of the item")
+    category: Optional[str] = Field(description="Category of the item")
+    action: Optional[str] = Field(description="Action to be taken on the item")
+
+
+class ExpenseItems(BaseModel):
+    items: List[ExpenseItem] = Field(description="List of expense items")
+
+
+def model(model_name: str, file: str, query: str) -> str:
+    model = ChatLiteLLM(model=model_name)
+
+    parser = PydanticOutputParser(pydantic_object=ExpenseItems)
+    prompt = PromptTemplate(
+        template="""You are a member of the finance team responsible for reviewing all submitted expenses.
             You have received the image "{file}" from a colleague.
             The following items are not permitted as per the policy and need to be flagged.
             1. Hard liquor
@@ -19,19 +35,12 @@ def model(model: str, file: str, text: str) -> str:
             2. Meals with clients
             3. Hotel stays
             4. Office supplies
-            Only print the report in a markdown format, with the following columns:
-            1. Date (yyyy-mm-dd)
-            2. Item name
-            3. Quantity
-            4. Amount
-            5. Category
-            6. Action (review/flag/approve)
-            7. Inline Image
-            Do not include the system message in your response.
-            Do not add anything else to the report.
+            5. Travel expenses
+            {format_instructions}
+            {query}
             """,
-            ),
-            HumanMessage(content=text),
-        ]
+        input_variables=["file", "query"],
+        partial_variables={"format_instructions": parser.get_format_instructions()},
     )
-    return response.content
+    chain = prompt | model | parser
+    return chain.invoke({"query": query, "file": file})
