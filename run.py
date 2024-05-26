@@ -1,5 +1,9 @@
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from argparse import ArgumentParser
+from langchain_community.document_loaders.generic import GenericLoader
+from langchain_community.document_loaders.merge import MergedDataLoader
+from parser.image import VisionImageParser
+from pprint import pprint as pp
 
 
 def argparse():
@@ -11,12 +15,18 @@ def argparse():
 
 
 def process(args):
-    loader = PyPDFDirectoryLoader(args.data_path)
-    docs = loader.load()
-    return docs
+    pdf_loader = PyPDFDirectoryLoader(args.data_path)
+    image_loader = GenericLoader.from_filesystem(
+        path=args.data_path,
+        suffixes=[".png", ".jpg", ".jpeg"],
+        show_progress=True,
+        parser=VisionImageParser(),
+    )
+    loader_all = MergedDataLoader(loaders=[pdf_loader, image_loader])
+    return loader_all.load()
 
 
 if __name__ == "__main__":
     args = argparse()
     docs = process(args)
-    print(docs)
+    pp(docs)
