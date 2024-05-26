@@ -1281,6 +1281,97 @@ files = [
 typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
+name = "pyobjc-core"
+version = "10.2"
+description = "Python<->ObjC Interoperability Module"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pyobjc-core-10.2.tar.gz", hash = "sha256:0153206e15d0e0d7abd53ee8a7fbaf5606602a032e177a028fc8589516a8771c"},
+    {file = "pyobjc_core-10.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:b8eab50ce7f17017a0f1d68c3b7e88bb1bb033415fdff62b8e0a9ee4ab72f242"},
+    {file = "pyobjc_core-10.2-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:f2115971463073426ab926416e17e5c16de5b90d1a1f2a2d8724637eb1c21308"},
+    {file = "pyobjc_core-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:a70546246177c23acb323c9324330e37638f1a0a3d13664abcba3bb75e43012c"},
+    {file = "pyobjc_core-10.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:a9b5a215080d13bd7526031d21d5eb27a410780878d863f486053a0eba7ca9a5"},
+    {file = "pyobjc_core-10.2-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:eb1ab700a44bcc4ceb125091dfaae0b998b767b49990df5fdc83eb58158d8e3f"},
+    {file = "pyobjc_core-10.2-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:c9a7163aff9c47d654f835f80361c1b112886ec754800d34e75d1e02ff52c3d7"},
+]
+
+[[package]]
+name = "pyobjc-framework-cocoa"
+version = "10.2"
+description = "Wrappers for the Cocoa frameworks on macOS"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pyobjc-framework-Cocoa-10.2.tar.gz", hash = "sha256:6383141379636b13855dca1b39c032752862b829f93a49d7ddb35046abfdc035"},
+    {file = "pyobjc_framework_Cocoa-10.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:f9227b4f271fda2250f5a88cbc686ff30ae02c0f923bb7854bb47972397496b2"},
+    {file = "pyobjc_framework_Cocoa-10.2-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:6a6042b7703bdc33b7491959c715c1e810a3f8c7a560c94b36e00ef321480797"},
+    {file = "pyobjc_framework_Cocoa-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:18886d5013cd7dc7ecd6e0df5134c767569b5247fc10a5e293c72ee3937b217b"},
+    {file = "pyobjc_framework_Cocoa-10.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:1ecf01400ee698d2e0ff4c907bcf9608d9d710e97203fbb97b37d208507a9362"},
+    {file = "pyobjc_framework_Cocoa-10.2-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:0def036a7b24e3ae37a244c77bec96b7c9c8384bf6bb4d33369f0a0c8807a70d"},
+    {file = "pyobjc_framework_Cocoa-10.2-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:5f47ecc393bc1019c4b47e8653207188df784ac006ad54d8c2eb528906ff7013"},
+]
+
+[package.dependencies]
+pyobjc-core = ">=10.2"
+
+[[package]]
+name = "pyobjc-framework-coreml"
+version = "10.2"
+description = "Wrappers for the framework CoreML on macOS"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pyobjc-framework-CoreML-10.2.tar.gz", hash = "sha256:a1d7743a91160d096ccd3f5f5d824dafdd6b99d0c4342e8c18852333c9b3318e"},
+    {file = "pyobjc_framework_CoreML-10.2-cp36-abi3-macosx_10_9_universal2.whl", hash = "sha256:ab99248b8ace0bebb11d15eb4094d8017093ebf76dadf828e324cacc9f1866f1"},
+    {file = "pyobjc_framework_CoreML-10.2-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:074b81c0e0e4177d33b2da8267d377fb7842b47eb7b977bb07d674b9b05c32b5"},
+    {file = "pyobjc_framework_CoreML-10.2-cp36-abi3-macosx_11_0_universal2.whl", hash = "sha256:baedffd5ab34dc0294c2c30ad1b5bcff175957f51f107b1f9f8b20f80e15cc9c"},
+]
+
+[package.dependencies]
+pyobjc-core = ">=10.2"
+pyobjc-framework-Cocoa = ">=10.2"
+
+[[package]]
+name = "pyobjc-framework-quartz"
+version = "10.2"
+description = "Wrappers for the Quartz frameworks on macOS"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pyobjc-framework-Quartz-10.2.tar.gz", hash = "sha256:9b947e081f5bd6cd01c99ab5d62c36500d2d6e8d3b87421c1cbb7f9c885555eb"},
+    {file = "pyobjc_framework_Quartz-10.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:bc0ab739259a717d9d13a739434991b54eb8963ad7c27f9f6d04d68531fb479b"},
+    {file = "pyobjc_framework_Quartz-10.2-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:2a74d00e933c1e1a1820839323dc5cf252bee8bb98e2a298d961f7ae7905ce71"},
+    {file = "pyobjc_framework_Quartz-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:3e8e33246d966c2bd7f5ee2cf3b431582fa434a6ec2b6dbe580045ebf1f55be5"},
+    {file = "pyobjc_framework_Quartz-10.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:c6ca490eff1be0dd8dc7726edde79c97e21ec1afcf55f75962a79e27b4eb2961"},
+    {file = "pyobjc_framework_Quartz-10.2-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:d3d54d9fa50de09ee8994248151def58f30b4738eb20755b0bdd5ee1e1f5883d"},
+    {file = "pyobjc_framework_Quartz-10.2-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:520c8031b2389110f80070b078dde1968caaecb10921f8070046c26132ac9286"},
+]
+
+[package.dependencies]
+pyobjc-core = ">=10.2"
+pyobjc-framework-Cocoa = ">=10.2"
+
+[[package]]
+name = "pyobjc-framework-vision"
+version = "10.2"
+description = "Wrappers for the framework Vision on macOS"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pyobjc-framework-Vision-10.2.tar.gz", hash = "sha256:722e0a6da64738b5fc3c763a102445cad5892c0af94597637e89455099da397e"},
+    {file = "pyobjc_framework_Vision-10.2-cp36-abi3-macosx_10_9_universal2.whl", hash = "sha256:42b7383c317c2076edcb44f7ad8ed4a6e675250a3fd20e87eef8e0e4233b1b58"},
+    {file = "pyobjc_framework_Vision-10.2-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:5e3adb56fca35d41a4bb113f3eadbe45e9667d8e3edf64908da3d6b130e14a8c"},
+    {file = "pyobjc_framework_Vision-10.2-cp36-abi3-macosx_11_0_universal2.whl", hash = "sha256:e424d106052112897c8aa882d8334ac984e12509f9a473a285827ba47bfbcc9a"},
+]
+
+[package.dependencies]
+pyobjc-core = ">=10.2"
+pyobjc-framework-Cocoa = ">=10.2"
+pyobjc-framework-CoreML = ">=10.2"
+pyobjc-framework-Quartz = ">=10.2"
+
+[[package]]
 name = "pypdf"
 version = "4.2.0"
 description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
@@ -1946,4 +2037,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "62a09969715ee4b742fa85f36efa51a3cab2024c252511d3fbb70cf13aa2a295"
+content-hash = "18ffb6850db0f13049c5a5acdd301d4fe9a14a6517dfbcfd446c9fa265cf3e34"
