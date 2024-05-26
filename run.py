@@ -2,6 +2,7 @@ from langchain_community.document_loaders import PyPDFDirectoryLoader
 from argparse import ArgumentParser
 from langchain_community.document_loaders.generic import GenericLoader
 from langchain_community.document_loaders.merge import MergedDataLoader
+from model.expense_report import model
 from parser.image import VisionImageParser
 from pprint import pprint as pp
 
@@ -29,4 +30,5 @@ def process(args):
 if __name__ == "__main__":
     args = argparse()
     docs = process(args)
-    pp(docs)
+    for doc in docs:
+        print(model(args.model, doc.metadata["source"], doc.page_content))
