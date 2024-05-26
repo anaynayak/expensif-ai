@@ -4,12 +4,13 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_core.prompts import PromptTemplate
+from langfuse.callback import CallbackHandler
 
 
 class ExpenseItem(BaseModel):
-    date: str = Field(description="Date of the expense in yyyy-mm-dd format")
+    date: Optional[str] = Field(description="Date of the expense in yyyy-mm-dd format")
     name: str = Field(description="Name of the item")
-    quantity: int = Field(description="Quantity of the item")
+    quantity: Optional[int] = Field(description="Quantity of the item")
     amount: Optional[float] = Field(description="Amount of the item")
     category: Optional[str] = Field(description="Category of the item")
     action: Optional[str] = Field(description="Action to be taken on the item")
@@ -43,4 +44,7 @@ def model(model_name: str, file: str, query: str) -> str:
         partial_variables={"format_instructions": parser.get_format_instructions()},
     )
     chain = prompt | model | parser
-    return chain.invoke({"query": query, "file": file})
+    langfuse_handler = CallbackHandler()
+    return chain.invoke(
+        {"query": query, "file": file}, config={"callbacks": [langfuse_handler]}
+    )
