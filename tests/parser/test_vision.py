@@ -1,0 +1,51 @@
+from parser.vision import detect_text
+from pathlib import Path
+
+
+def test_parse_image():
+    path = Path(__file__).parent / "food.jpg"
+    actual = detect_text(str(path.absolute()))
+    assert actual == [
+        ["HMS", 0.30000001192092896],
+        ["HOST", 0.5],
+        ["Feeling Good on the Move®", 1.0],
+        ["An Autogrill Company", 1.0],
+        ["HMSHost Services India Pvt Ltd", 0.5],
+        ["Jones the Grocer Dom T1", 1.0],
+        ["Kempegowda International Airport,", 1.0],
+        ["Devanahalli, Karnataka, Bengaluru", 0.5],
+        ["THIS IS A TAX INVOICE", 1.0],
+        ["910040267 MANU", 1.0],
+        ["WS#: 100013", 1.0],
+        ["CHK 355995", 1.0],
+        ["25 Apr'24 19:31 PM", 1.0],
+        ["Take-Out", 1.0],
+        ["1 Croissant Avocado", 1.0],
+        ["Credit Card", 1.0],
+        ["19:31 B by: MANU", 1.0],
+        ["Subtotal", 1.0],
+        ["CGST 2,5%", 0.5],
+        ["SGST 2,5%", 0.5],
+        ["Rounding", 1.0],
+        ["Payment", 1.0],
+        ["Change Due", 1.0],
+        ["449.00", 1.0],
+        ["INR471.50", 0.5],
+        ["INR449.00", 0.5],
+        ["INR11.23", 0.5],
+        ["INR 11.23", 0.5],
+        ["INRO.04", 0.5],
+        ["INR471.50", 0.5],
+        ["INRO.00", 0.5],
+        ["-- Check Closed", 1.0],
+        ["25 Apr'24 19:31 PM", 1.0],
+        ["Thank you,", 1.0],
+        ["Please Visit Us Again", 1.0],
+        ["GSTIN: 29AABCH7805C1ZR", 0.5],
+        ["SAC/HSN code: 996331", 0.5],
+        ["FSSAI License ID : 10023808000024", 1.0],
+        ["Feedback & Suggestions", 1.0],
+        ["E-mail :", 0.5],
+        ["kathhiravan.radhakrishnan@hmshost.net", 0.5],
+        ["Phone: +91-6366911201", 1.0],
+    ]

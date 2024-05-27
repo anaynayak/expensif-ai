@@ -18,6 +18,10 @@ langfuse = ">=2.0.0"
 [tool.poetry.group.extras.dependencies]
 langchain-google-genai = "^1.0.5"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
