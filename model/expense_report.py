@@ -2,7 +2,7 @@ from typing import List, Optional
 from langchain_community.chat_models import ChatLiteLLM
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.pydantic_v1 import BaseModel, Field
-from langchain_core.output_parsers import PydanticOutputParser
+from langchain_core.output_parsers import SimpleJsonOutputParser
 from langchain_core.prompts import PromptTemplate
 from langfuse.callback import CallbackHandler
 from langchain.output_parsers import OutputFixingParser
@@ -24,7 +24,7 @@ class ExpenseItems(BaseModel):
 def model(model_name: str, file: str, query: str) -> str:
     model = ChatLiteLLM(model=model_name, temperature=0, max_tokens=1000)
 
-    parser = PydanticOutputParser(pydantic_object=ExpenseItems)
+    parser = SimpleJsonOutputParser(pydantic_object=ExpenseItems)
     prompt = PromptTemplate(
         template="""You are a member of the finance team responsible for reviewing all submitted expenses.
             You have received the image "{file}" from a colleague.
