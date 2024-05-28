@@ -4,20 +4,16 @@ from model.expense_report import model
 from parser.vision import detect_text
 import json
 import pytest
-import litellm
-from litellm.caching import Cache
 
 images_path = Path(__file__).parent / "images"
-litellm.cache = Cache(
-    type="disk", disk_cache_dir=f"{images_path.absolute()}/.litellm_cache"
-)
+
 from pprint import pprint as pp
 
 dataset = load_dataset("naver-clova-ix/cord-v2", split="train[:1%]")
 
 
 @pytest.mark.parametrize("idx, data", enumerate(dataset))
-def test_should_return_correct_output(idx, data):
+def test_should_return_correct_output(idx, data, llm_cache):
     image = str((images_path / f"test{idx}.png").absolute())
     data["image"].save(image)
     gt = json.loads(data["ground_truth"])
