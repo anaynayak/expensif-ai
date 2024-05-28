@@ -4,7 +4,6 @@ from langchain_community.document_loaders.generic import GenericLoader
 from langchain_community.document_loaders.merge import MergedDataLoader
 from model.expense_report import model
 from parser.image import VisionImageParser
-from pprint import pprint as pp
 
 
 def argparse():

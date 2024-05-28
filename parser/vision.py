@@ -1,7 +1,5 @@
 """ Use Apple's Vision Framework via PyObjC to perform text detection on images (macOS 10.15+ only) """
 
-import logging
-import sys
 from typing import List, Optional
 
 import objc
@@ -37,7 +35,7 @@ def detect_text(img_path: str, orientation: Optional[int] = None) -> List:
         vision_request = (
             Vision.VNRecognizeTextRequest.alloc().initWithCompletionHandler_(handler)
         )
-        error = vision_handler.performRequests_error_([vision_request], None)
+        vision_handler.performRequests_error_([vision_request], None)
         vision_request.dealloc()
         vision_handler.dealloc()
 
