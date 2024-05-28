@@ -21,6 +21,7 @@ langchain-google-genai = "^1.0.5"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.1"
+huggingface-hub = "^0.23.2"
 
 [build-system]
 requires = ["poetry-core"]
