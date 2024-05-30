@@ -1,3 +1,4 @@
+import os
 from typing import List, Optional
 from langchain_community.chat_models import ChatLiteLLM
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -48,7 +49,5 @@ def model(model_name: str, file: str, query: str) -> str:
     )
     new_parser = OutputFixingParser.from_llm(parser=parser, llm=model)
     chain = prompt | model | new_parser
-    langfuse_handler = CallbackHandler()
-    return chain.invoke(
-        {"query": query, "file": file}, config={"callbacks": [langfuse_handler]}
-    )
+    callbacks = [CallbackHandler()] if os.environ.get("LANGFUSE_PUBLIC_KEY") else []
+    return chain.invoke({"query": query, "file": file}, config={"callbacks": callbacks})
