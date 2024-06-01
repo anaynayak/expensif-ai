@@ -61,11 +61,10 @@ class Observation:
         return Observation(
             self.text,
             self.confidence,
-            BoundingBox(0, self.bbox.y1, self.bbox.x2, self.bbox.y2),
+            BoundingBox(0, self.bbox.y1, 1, self.bbox.y2),
         )
 
     def overlaps(self, other: "Observation") -> bool:
-        print(self.text, other.text, self.bbox.compute_iou(other.bbox))
         return self.bbox.compute_iou(other.bbox) > 0.2
 
     def merge(self, other: "Observation") -> "Observation":
@@ -77,7 +76,7 @@ class Observation:
         return Observation(
             text,
             (self.confidence + other.confidence) / 2,
-            BoundingBox.from_bbox(
+            BoundingBox(
                 min(self.bbox.x1, other.bbox.x1),
                 min(self.bbox.y1, other.bbox.y1),
                 max(self.bbox.x2, other.bbox.x2),
@@ -88,7 +87,6 @@ class Observation:
 
 def detect_text(img_path: str) -> List[Observation]:
     ocr_text = ocrmac.OCR(str(img_path))
-    # ocr_text.annotate_PIL().show()
     return [
         Observation(text, confidence, BoundingBox.from_bbox(x, y, w, h))
         for (text, confidence, (x, y, w, h)) in ocr_text.recognize()
