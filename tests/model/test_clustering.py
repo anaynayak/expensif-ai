@@ -8,7 +8,7 @@ def test_clustering():
     path = Path(__file__).parent / "test1.png"
     results = detect_text(str(path))
 
-    all_text = [observation.text for observation in cluster(results)]
+    all_text = [observation.text for observation in cluster(path, results)]
     assert all_text == [
         "BLR LS HARVEST MARKET",
         "TAX INVOICE",

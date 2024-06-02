@@ -1,7 +1,7 @@
 from typing import List
 from ocrmac import ocrmac
 
-from observation import BoundingBox, Observation
+from model.observation import BoundingBox, Observation
 from render import render
 
 

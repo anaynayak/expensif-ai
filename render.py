@@ -1,7 +1,7 @@
 import os
 from typing import List
 from PIL import Image, ImageDraw
-from observation import Observation
+from model.observation import Observation
 from ocrmac import ocrmac
 
 
