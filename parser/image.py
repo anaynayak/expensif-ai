@@ -9,7 +9,10 @@ from langchain_core.document_loaders import BaseBlobParser, Blob
 class VisionImageParser(BaseBlobParser):
     def lazy_parse(self, blob: Blob) -> Iterator[Document]:
         text = "\n".join(
-            [observation.text for observation in cluster(detect_text(blob.source))]
+            [
+                observation.text
+                for observation in cluster(blob.source, detect_text(blob.source))
+            ]
         )
         print(text)
         yield Document(
