@@ -4,6 +4,8 @@ import gradio as gr
 
 from expensifai.expense_report import model
 from expensifai.render import render_html
+from litellm.caching import Cache
+import litellm
 
 
 def interface():
@@ -29,4 +31,5 @@ def processImage(file, model_name):
 
 
 if __name__ == "__main__":
+    litellm.cache = Cache(type="disk", disk_cache_dir="/tmp/.litellm_cache")
     interface()
