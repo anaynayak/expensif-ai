@@ -29,17 +29,15 @@ def model(model_name: str, file: str, query: str) -> str:
     prompt = PromptTemplate(
         template="""You are a member of the finance team responsible for reviewing all submitted expenses.
             You have received the image "{file}" from a colleague.
-            The following items are not permitted as per the policy and should have the `action` marked as `FLAGGED`.
-            1. Hard liquor
-            2. Cigarettes
-            3. Personal items
-            The following items are permitted and should have the `action` marked as `APPROVE`.
-            1. Cab visits to the airport/office
-            2. Meals with clients
-            3. Hotel stays
-            4. Office supplies
-            5. Travel expenses
-            All other items should be marked as `REVIEW`.
+            The following items are not permitted as per the policy and should have the `action` marked as `FLAGGED`:
+                1. Alcoholic drinks
+                2. Cigarettes
+                3. Personal items
+                4. Drinks
+            The following items are permitted and should have the `action` marked as `APPROVE`:
+                1. Transport/Cab expenses
+                2. Food expenses
+                3. Hotel bookings
             {format_instructions}
             Only respond with the items that need to be flagged, approved, or reviewed. Do not add any additional explanation.
             {query}
