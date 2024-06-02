@@ -1,13 +1,10 @@
-import os
 from typing import List
 from PIL import Image, ImageDraw
-from model.observation import Observation
+from .observation import Observation
 from ocrmac import ocrmac
 
 
-def render(name: str, img_path: str, observations: List[Observation]):
-    if not os.environ.get("RENDER"):
-        return
+def render(img_path: str, observations: List[Observation]) -> Image.Image:
     color = "red"
     image = Image.open(img_path)
     draw = ImageDraw.Draw(image)
@@ -27,7 +24,7 @@ def render(name: str, img_path: str, observations: List[Observation]):
         draw.rectangle((x1, y1, x2, y2), outline=color)
         draw.text((x1, y2), observation.text, align="left", fill=color)
 
-    image.save(f"/tmp/{name}.png")
+    return image
 
 
 def render_items(resp):

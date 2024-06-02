@@ -1,8 +1,8 @@
 from pathlib import Path
 from datasets import load_dataset
-from model.expense_report import model
-from model.clustering import cluster
-from parser.vision import detect_text
+from expensifai.expense_report import model
+from expensifai.clustering import cluster
+from expensifai.vision import detect_text
 import json
 import pytest
 
@@ -20,7 +20,9 @@ def test_should_return_correct_output(idx, data, llm_cache):
     gt = json.loads(data["ground_truth"])
     menu = gt["gt_parse"]["menu"]
 
-    vision_text = cluster(image, detect_text(image))
+    observations, _ = detect_text(image)
+    observations, _ = cluster(image, observations)
+    vision_text = "\n".join([observation.text for observation in observations])
     expense_items = model("ollama/llama3", image, vision_text)
 
     pp(["vision text", vision_text])

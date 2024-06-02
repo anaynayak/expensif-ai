@@ -1,14 +1,16 @@
-from model.clustering import cluster
+from expensifai.clustering import cluster
 from pathlib import Path
 
-from parser.vision import detect_text
+from expensifai.vision import detect_text
 
 
 def test_clustering():
     path = Path(__file__).parent / "test1.png"
-    results = detect_text(str(path))
+    results, _ = detect_text(str(path))
+    observations, _ = cluster(path, results)
 
-    all_text = [observation.text for observation in cluster(path, results)]
+    all_text = [observation.text for observation in observations]
+
     assert all_text == [
         "BLR LS HARVEST MARKET",
         "TAX INVOICE",

@@ -1,9 +1,12 @@
-from typing import List
-from parser.vision import Observation
-from render import render
+from typing import List, Tuple
+from expensifai.vision import Observation
+from expensifai.render import render
+from PIL.Image import Image
 
 
-def cluster(path: str, observations: List[Observation]):
+def cluster(
+    path: str, observations: List[Observation]
+) -> Tuple[List[Observation], Image]:
     observations = [observation.expand_till_left() for observation in observations]
     clusters: List[Observation] = []
     for observation in observations:
@@ -18,5 +21,4 @@ def cluster(path: str, observations: List[Observation]):
         clusters = new_clusters
         if not overlaps:
             clusters.append(observation)
-    render("cluster", path, clusters)
-    return clusters
+    return clusters, render(path, clusters)

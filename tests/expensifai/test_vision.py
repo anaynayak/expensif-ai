@@ -1,11 +1,11 @@
 from pathlib import Path
 
-from parser.vision import detect_text, Observation, BoundingBox
+from expensifai.vision import detect_text, Observation, BoundingBox
 
 
 def test_parse_image():
     path = Path(__file__).parent / "food.jpg"
-    annotations = detect_text(str(path))
+    annotations, _ = detect_text(str(path))
     assert annotations == [
         Observation(
             "HMS",
