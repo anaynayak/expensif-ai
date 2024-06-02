@@ -8,14 +8,14 @@ from langchain_core.document_loaders import BaseBlobParser, Blob
 
 class VisionImageParser(BaseBlobParser):
     def lazy_parse(self, blob: Blob) -> Iterator[Document]:
-        text = "\n".join(
-            [
-                observation.text
-                for observation in cluster(blob.source, detect_text(blob.source))
-            ]
-        )
+        observations = VisionImageParser.parse(blob.source)
+        text = "\n".join([observation.text for observation in observations])
         print(text)
         yield Document(
             page_content=text,
-            metadata={"page": 1, "source": blob.source},
+            metadata={"page": 1, "source": blob.source, "observations": observations},
         )
+
+    @classmethod
+    def parse(cls, path: str) -> Document:
+        return cluster(path, detect_text(path))

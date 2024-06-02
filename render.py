@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 from typing import List
 from PIL import Image, ImageDraw
 from observation import Observation
@@ -28,4 +27,36 @@ def render(name: str, img_path: str, observations: List[Observation]):
         draw.rectangle((x1, y1, x2, y2), outline=color)
         draw.text((x1, y2), observation.text, align="left", fill=color)
 
-    image.save(f"/tmp/{Path(img_path).name}_{name}.png")
+    image.save(f"/tmp/{name}.png")
+
+
+def render_items(resp):
+    return "\n".join(
+        [
+            f"<tr><td>{item['date']}</td><td>{item['name']}</td><td>{item['quantity']}</td><td>{item['amount']}</td><td>{item['category']}</td><td>{item['action']}</td></tr>"
+            for item in resp["items"]
+        ]
+    )
+
+
+def render_html(resp):
+    return (
+        """
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Name</th>
+<th>Quantity</th>
+<th>Amount</th>
+<th>Category</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>"""
+        + render_items(resp)
+        + """
+</tbody>
+</table>
+"""
+    )

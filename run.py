@@ -1,33 +1,32 @@
-from langchain_community.document_loaders import PyPDFDirectoryLoader
-from argparse import ArgumentParser
-from langchain_community.document_loaders.generic import GenericLoader
-from langchain_community.document_loaders.merge import MergedDataLoader
-from model.expense_report import model
 from parser.image import VisionImageParser
 
+import gradio as gr
 
-def argparse():
-    parser = ArgumentParser()
-    parser.add_argument("--data-path", type=str)
-    parser.add_argument("--model", type=str, default="ollama/llama3")
-    args = parser.parse_args()
-    return args
+from model.expense_report import model
+from render import render_html
 
 
-def process(args):
-    pdf_loader = PyPDFDirectoryLoader(args.data_path)
-    image_loader = GenericLoader.from_filesystem(
-        path=args.data_path,
-        suffixes=[".png", ".jpg", ".jpeg"],
-        show_progress=True,
-        parser=VisionImageParser(),
+def interface():
+    demo = gr.Interface(
+        fn=processImage,
+        inputs=[
+            gr.Image(type="filepath"),
+            gr.Dropdown(
+                ["ollama/llama3", "ollama/phi3"], value="ollama/llama3", label="Model"
+            ),
+        ],
+        outputs=[gr.HTML(), gr.Image(type="filepath")],
     )
-    loader_all = MergedDataLoader(loaders=[pdf_loader, image_loader])
-    return loader_all.load()
+
+    demo.launch()
+
+
+def processImage(file, model_name):
+    observations = VisionImageParser.parse(file)
+    text = "\n".join([observation.text for observation in observations])
+    resp = model(model_name, file, text)
+    yield render_html(resp), "/tmp/cluster.png"
 
 
 if __name__ == "__main__":
-    args = argparse()
-    docs = process(args)
-    for doc in docs:
-        print(model(args.model, doc.metadata["source"], doc.page_content))
+    interface()
