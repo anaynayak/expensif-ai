@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+        }
+        img[alt=receipt] { width: 200px; }
+
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+        }
+
+        .remark-code,
+        .remark-inline-code {
+            font-family: 'Ubuntu Mono';
+        }
+
+        .inverse {
+            background: hsl(0, 0%, 15%);
+            color: hsl(0, 5%, 75%);
+        }
+
+        .inverse h1 {
+            text-align: center;
+            color: hsl(0, 5%, 95%);
+            line-height: 0.8em;
+        }
+
+        .inverse h2 {
+            color: hsl(0, 5%, 90%);
+            line-height: 0.8em;
+        }
+
+        .inverse a {
+            color: hsl(330, 75%, 50%);
+            text-decoration: none;
+        }
+
+        .inverse code {
+            color: hsl(330, 75%, 100%);
+        }
+    </style>
+</head>
+
+<body>
+    <textarea id="source">
+class: inverse
+layout: true
+---
+class: center, middle
+
+# Expensif-ai
+
+
+---
+class: center, middle
+
+# The dream
+
+---
+
+class: left, top
+
+# The dream
+
+* Can we simplify expense receipt processing for Finance teams?
+* Can we use AI to automate the process of sorting through receipts and categorizing them?
+* Can we flag items that are not supposed to be expensed? 🍷, 🚬, 🚢
+* Can we identify anomalies in the expense reports? A 3km trip costing ₹3000?
+* Can we identify duplicate receipts in the expense report?
+---
+# The test subject
+
+* Can we identify the items purchased on a receipt?
+* .right[![receipt](receipt.jpg)]
+---
+# The journey - Attempt #0
+
+### llava model run locally directly against the image
+
+
+```sh
+❯ ollama run llava "List out the items purchased on ./docs/receipt.jpg"
+Added image './docs/receipt.jpg'
+ The image shows a receipt for an order placed at "The Mint Room." It appears to be from a restaurant, bar, or eatery. Here is the list of items purchased:
+
+1. BREAD - 0.50
+2. SAUSAGE - 1.50
+3. POTATOES - 1.50
+4. EGG - 1.50
+5. COFFEE - 0.75
+6. TEA - 0.75
+7. WINE - 2.50
+8. SODA - 0.75
+9. BEER - 3.00
+
+The total cost of the items is 12.25, and it was paid for using an "NGC" method of payment. There are also various charges such as service charge, tax, and VIP. The receipt indicates
+that it was printed on April 8th at 7:43 PM. The text on the image is not completely legible due to the angle and quality of the photo.
+```
+---
+
+# The journey - Attempt #1
+
+### easyocr
+
+```text
+HMS
+H 0 $ T
+Feollng Good on the Move"
+An
+Aueadil
+HMSHost Services India Pvt Ltd
+Jones the Grocer Dom Ti
+Kempegowda Internat iona| Airport ,
+Devanaha] 1i
+Karnataka
+luru
+THIS IS
+A TAX INVOICE
+910040267 MANU
+WS# : 100013
+CHK 355995
+25 Apr'24 19;31 PM
+1
+Take-Out
+Credit
+Avocado
+449.00
+19;31
+B by:
+INR471,50
+Subtota]
+CGST 2,5%
+INR449.00
+INRI1.23
+SGST 2,5%
+INR11,23
+Rounding
+INRO.04
+Payment
+INR471.50
+Change
+Due
+INRO
+00
+Check Closed
+25 Apr'24 19.31 PM
+Thank you ,
+Please Visit Us ' Again
+GSTIN:  29AABCH78O5C1ZR
+SAC/HSN code: 996331
+FSSAI License ID
+10023808000024
+Feedback & Suggest ions
+E-mail
+kathhirayanradhakr ishnanghmshost
+net
++91-6366911201
+Copo
+Benga
+Croissant
+Card
+MANU
+Phone
+```
+
+---
+
+# The journey - Attempt #2
+
+### Apple vision APIs a.k.a the Eureka moment
+
+```sh
+HMSHost Services India Pvt Ltd
+Jones the Grocer Dom T1
+Kempegowda International Airport, Devanahalli, Karnataka, Bengaluru
+THIS IS A TAX INVOICE
+910040267 MANU
+WS#: 100013
+Subtotal
+INR449.00
+CGST 2,5%
+INR11.23
+SGST 2,5%
+INR 11.23
+Rounding
+INRO.04
+Payment
+INR471.50
+Change Due
+INRO.00
+CHK 355995
+25 Apr'24 19:31 PM
+Take-Out
+1 Croissant Avocado
+Credit Card
+19:31 B by: MANU
+449.00
+INR471.50
+-- Check Closed
+25 Apr'24 19:31 PM
+Thank you,
+Please Visit Us Again
+GSTIN: 29AABCH7805C1ZR
+SAC/HSN code: 996331
+FSSAI License ID: 10023808000024
+Feedback & Suggestions
+E-mail :
+kathhiravan. radhakrishnan@hmshost.net
+Phone: +91-6366911201
+
+
+```
+---
+
+# The journey - Attempt #3
+
+### Can we get the text in the right order?
+
+* Bounding box to the rescue
+* .right[![receipt](receipt-bounding-box.png)]
+---
+
+# The journey - Attempt #3
+
+### How do we get the receipt text in the right order?
+
+* Use the bounding boxes to identify horizontally overlapping text based on IOU
+* Other mechanisms of clustering (k-means/DBSCAN) didn't work effectively
+* .right[![receipt](receipt-bounding-box-expanded.png)]
+
+---
+
+# The journey - Attempt #3
+
+### Feed text to LLM and profit
+
+* Structured response extraction + attempt correction if invalid
+* Receipt -> Apple Vision APIs -> IOU Clustering -> LLM -> Output
+
+---
+
+# Make it production grade
+
+* Tests to validate that Apple Vision APIs detect image text correctly on sample images
+* Integration test to validate the overall flow
+* Half baked tests to validate on a public dataset of 1000 receipt images [CORD](https://github.com/clovaai/cord)
+* Use [Langfuse](http://localhost:3000/) for LLMOps
+---
+
+class: center, middle
+
+# DEMO
+[Link](http://127.0.0.1:7860/)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+
+    </script>
+    <script>
+        var slideshow = remark.create();
+    </script>
+</body>
+
+</html>
