@@ -2034,6 +2034,20 @@ pillow = "*"
 pyobjc-framework-Vision = "*"
 
 [[package]]
+name = "ollama"
+version = "0.2.1"
+description = "The official Python client for Ollama."
+optional = false
+python-versions = "<4.0,>=3.8"
+files = [
+    {file = "ollama-0.2.1-py3-none-any.whl", hash = "sha256:b6e2414921c94f573a903d1069d682ba2fb2607070ea9e19ca4a7872f2a460ec"},
+    {file = "ollama-0.2.1.tar.gz", hash = "sha256:fa316baa9a81eac3beb4affb0a17deb3008fdd6ed05b123c26306cfbe4c349b6"},
+]
+
+[package.dependencies]
+httpx = ">=0.27.0,<0.28.0"
+
+[[package]]
 name = "openai"
 version = "1.30.5"
 description = "The official Python library for the openai API"
@@ -4033,4 +4047,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "bf1531b06a6ffb84ab2fc08f4548f2eae7098f22f86ec157169c74e6aa11ead2"
+content-hash = "9b7f79902f1e0712be518babb4ace209280ee1ac809d054ed3cbf4fcde2484d4"

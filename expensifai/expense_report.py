@@ -1,4 +1,3 @@
-import os
 from typing import List, Optional
 from langchain_community.chat_models import ChatLiteLLM
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -22,7 +21,7 @@ class ExpenseItems(BaseModel):
     items: List[ExpenseItem] = Field(description="List of all expense items")
 
 
-def model(model_name: str, file: str, query: str) -> str:
+def model(model_name: str, file: str, query: str, llm_ops: bool) -> ExpenseItems:
     model = ChatLiteLLM(model=model_name, temperature=0, max_tokens=1000)
 
     parser = SimpleJsonOutputParser(pydantic_object=ExpenseItems)
@@ -47,5 +46,6 @@ def model(model_name: str, file: str, query: str) -> str:
     )
     new_parser = OutputFixingParser.from_llm(parser=parser, llm=model)
     chain = prompt | model | new_parser
-    callbacks = [CallbackHandler()] if os.environ.get("LANGFUSE_PUBLIC_KEY") else []
-    return chain.invoke({"query": query, "file": file}, config={"callbacks": callbacks})
+    callbacks = [CallbackHandler()] if llm_ops else []
+    resp = chain.invoke({"query": query, "file": file}, config={"callbacks": callbacks})
+    return ExpenseItems.parse_obj(resp)

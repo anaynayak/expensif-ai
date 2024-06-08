@@ -30,7 +30,14 @@ def render(img_path: str, observations: List[Observation]) -> Image.Image:
 def render_items(resp):
     return "\n".join(
         [
-            f"<tr><td>{item['date']}</td><td>{item['name']}</td><td>{item['quantity']}</td><td>{item['amount']}</td><td>{item['category']}</td><td>{item['action']}</td></tr>"
+            f"""<tr>
+            <td>{item.get('date')}</td>
+            <td>{item.get('name')}</td>
+            <td>{item.get('quantity')}</td>
+            <td>{item.get('amount')}</td>
+            <td>{item.get('category')}</td>
+            <td>{item.get('action')}</td>
+            </tr>"""
             for item in resp["items"]
         ]
     )
