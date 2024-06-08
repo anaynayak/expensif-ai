@@ -16,6 +16,7 @@ diskcache = "^5.6.3"
 ocrmac = "^0.1.6"
 gradio = "^4.32.2"
 ollama = "^0.2.1"
+pytest-benchmark = "^4.0.0"
 
 
 [tool.poetry.group.extras.dependencies]
