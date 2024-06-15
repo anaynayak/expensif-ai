@@ -32,8 +32,8 @@ def processImage(file, model_name, llm_ops) -> Tuple[ExpenseItems, Image]:
 
 
 def process(file, model_name, llm_ops) -> Generator[Tuple[str, Image], None, None]:
-    resp, image = processImage(file, model_name, llm_ops)
-    yield render_html(resp), image
+    expense_items, image = processImage(file, model_name, llm_ops)
+    yield render_html(expense_items), image
 
 
 def arg_parse():

@@ -1,5 +1,7 @@
 from typing import List
 from PIL import Image, ImageDraw
+
+from expensifai.expense_report import ExpenseItems
 from .observation import Observation
 from ocrmac import ocrmac
 
@@ -27,23 +29,23 @@ def render(img_path: str, observations: List[Observation]) -> Image.Image:
     return image
 
 
-def render_items(resp):
+def render_items(expense_items: ExpenseItems) -> str:
     return "\n".join(
         [
             f"""<tr>
-            <td>{item.get('date')}</td>
-            <td>{item.get('name')}</td>
-            <td>{item.get('quantity')}</td>
-            <td>{item.get('amount')}</td>
-            <td>{item.get('category')}</td>
-            <td>{item.get('action')}</td>
+            <td>{item.date}</td>
+            <td>{item.name}</td>
+            <td>{item.quantity}</td>
+            <td>{item.amount}</td>
+            <td>{item.category}</td>
+            <td>{item.action}</td>
             </tr>"""
-            for item in resp["items"]
+            for item in expense_items.items
         ]
     )
 
 
-def render_html(resp):
+def render_html(expense_items: ExpenseItems) -> str:
     return (
         """
 <table>
@@ -58,7 +60,7 @@ def render_html(resp):
 </tr>
 </thead>
 <tbody>"""
-        + render_items(resp)
+        + render_items(expense_items)
         + """
 </tbody>
 </table>
